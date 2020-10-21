@@ -1,15 +1,21 @@
 const express = require('express')
 const app = express()
 const port = 3000
-let timeStamp
+let requestTime
+
 
 app.use('/', (req, res, next) => {
-  timeStamp = new Date()
-  console.log(`${displayTimeStamp(timeStamp)} | ${req.method} from ${req.originalUrl}`)
+  const requestTime = new Date()
+  res.on('finish', () => {
+    const responseTime = new Date()
+    const duration = responseTime - requestTime
+    console.log(`${displayTimeStamp(requestTime)} | ${req.method} from ${req.path} | ${duration}ms`)
+  })
   next()
 })
 
 app.get('/', (req, res) => {
+
   res.send('列出全部 Todo')
 })
 
@@ -30,6 +36,11 @@ app.listen(port, () => {
 })
 
 
+
 function displayTimeStamp(timeStamp) {
-  return `${timeStamp.getFullYear()}-${timeStamp.getMonth() + 1}-${timeStamp.getDate()} ${timeStamp.getHours()}:${timeStamp.getMinutes()}:${timeStamp.getSeconds()}`
+  return `${timeStamp.getFullYear()}-${numberFormat(timeStamp.getMonth() + 1)}-${numberFormat(timeStamp.getDate())} ${numberFormat(timeStamp.getHours())}:${numberFormat(timeStamp.getMinutes())}:${numberFormat(timeStamp.getSeconds())}`
+}
+
+function numberFormat(n) {
+  return n < 10 ? `0${n}` : `${n}`
 }
