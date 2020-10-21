@@ -1,6 +1,6 @@
 # Express Middleware Practice
 
-Showing each request time, method, path and the duration of each request-response cycle on server log.
+Set up Express middlewares to show HTTP request info on server log, including request time, method, path and the duration between request and response.
 For example, ``` 2020-10-21 22:38:05 | GET from /new | 15ms ```
 
 ## Prerequisite
